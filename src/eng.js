@@ -6,10 +6,12 @@ const Eng = () => {
             <h1 className="text-center"> English Words</h1>
             <div className="eng-main">
                 <div>
-                    <a className="mx-1 btn btn-small btn-success">new word</a>
-                    <a className="mx-1 btn btn-small btn-success">
+                    <a href="/new" className="mx-1 btn btn-small btn-success">
+                        new word
+                    </a>
+                    <a href="/learn" className="mx-1 btn btn-small btn-success">
                         past words
-                    </a>{' '}
+                    </a>
                 </div>
             </div>
         </div>
