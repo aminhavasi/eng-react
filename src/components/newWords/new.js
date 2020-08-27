@@ -13,6 +13,7 @@ const New = () => {
                 <form className="mt-5 text-white">
                     <label className="mr-1">please enater a new word:</label>
                     <input className="form-group" placeholder="new word?" />
+                    <input className="form-group ml-1" placeholder="معنی?" />
                     <button
                         className="btn btn-sm btn-success ml-1"
                         type="submit"
