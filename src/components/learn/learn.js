@@ -3,6 +3,11 @@ import './learn.css';
 const Learn = () => {
     return (
         <div className="learn">
+            <div className="bg-primary">
+                <a href="/rtest" className="text-white ">
+                    random words test
+                </a>
+            </div>
             <div class="container">
                 <h2>Learned Words Table</h2>
                 <p>you can see the all of the words in the blow:</p>
