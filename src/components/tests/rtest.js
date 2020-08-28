@@ -13,11 +13,17 @@ const Rtest = () => {
                     start
                 </button>
             </div>
-            <div>
-                siuashgdfou8haswrp9fughphrgb aedffoiuvhp9ihgrp9uaep9gvut
-                aeprifuvbhaephgoi;aerpgvbae
-                adpfiougvbhpaouerhgvpuoaehrvbpiu;adpfiougvbhpaouerhgvpuoaehrvbpiupuasffhv[oaeighb
-                paufhvpiafhvgbeuahtbvgp9iuhft]
+            <div className="bg-light shadow p-5 w-50">
+                <div className=" text-right">10</div>
+                <div className="text-center">Sky</div>
+                <div className="text-center mt-3 ">
+                    <button className="btn btn-success  mx-1 my-1">
+                        remamber
+                    </button>
+                    <button className="btn btn-danger  mx-1 my-1">
+                        forget
+                    </button>
+                </div>
             </div>
         </div>
     );
