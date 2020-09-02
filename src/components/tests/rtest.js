@@ -4,12 +4,20 @@ import test from './../../services/fakeRTest';
 
 const Rtest = () => {
     const [question, setQuestion] = useState([]);
+    const [qTime, setQTime] = useState(1);
 
     useEffect(() => {
+        setTimeout(function () {
+            if (qTime === 2) {
+                setQTime(1);
+            } else {
+                setQTime(2);
+            }
+        }, 3000);
         const tes = test();
-
         setQuestion(tes);
-    }, []);
+    }, [qTime]);
+
     return (
         <div className="rtest container bg-lisght shadow">
             you have 10 question that must answer . if you ready please click on
@@ -23,7 +31,7 @@ const Rtest = () => {
                 </button>
             </div>
             {question.map((ques) =>
-                ques.id === 1 ? (
+                ques.id === qTime ? (
                     <div className="bg-light shadow  p-5 w-50" key={ques.id}>
                         <div className="text-center ">{ques.word}</div>
                         <form className="text-center mt-3 ">
