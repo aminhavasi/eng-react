@@ -34,7 +34,9 @@ const Rtest = () => {
         const questions = await test();
         if (testStart === false) {
             const uniqueNumbers = await randomGenerator();
-            setUnique(uniqueNumbers);
+            await setUnique(uniqueNumbers);
+            console.log(unique);
+            console.log(questions[unique[1]]);
         }
 
         setStart(!testStart);
