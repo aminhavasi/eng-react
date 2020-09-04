@@ -1,111 +1,84 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import './test.css';
 import test from './../../services/fakeRTest';
 
 const Rtest = () => {
-    const [question, setQuestion] = useState([]);
-    const [qTime, setQTime] = useState(0);
-    const [usedNumber, setUsedNumber] = useState([]);
+    let [testStart, setStart] = useState(false);
+    let [unique, setUnique] = useState([]);
 
-    const remember = (id) => {
-        let questions = [...question];
-        const ques = questions.find((element) => {
-            if (element.id === id) return id;
-        });
-        ques.score++;
-    };
-    const forget = (id) => {
-        let questions = [...question];
-        const ques = questions.find((element) => {
-            if (element.id === id) return id;
-        });
-        ques.score--;
-    };
+    //-random generate
 
-    const timeInterval = () => {
-        let usedNumbers = [...usedNumber];
-        let questions = [...question];
-        let randomNumber = () => {
-            let index = 0;
-            while (index < questions.length) {
-                let number = Math.floor(Math.random() * questions.length + 1);
-                if (usedNumbers.length === 0) {
-                    usedNumbers.push(number);
-                    setUsedNumber(usedNumbers);
+    const randomGenerator = () => {
+        let uniqueNumber = [];
+        let index = 0;
+        while (index < 5) {
+            let number = Math.floor(Math.random() * 5 + 1);
+            if (uniqueNumber.length === 0) {
+                uniqueNumber.push(number);
+                index++;
+            } else {
+                let st = uniqueNumber.find((value) => {
+                    return value === number;
+                });
+                if (!st) {
                     index++;
-                } else {
-                    let st = usedNumbers.find((value) => {
-                        return value === number;
-                    });
-
-                    if (!st) {
-                        index++;
-
-                        usedNumbers.push(number);
-                        setUsedNumber(usedNumbers);
-                    }
+                    uniqueNumber.push(number);
                 }
             }
-        };
-        randomNumber();
-        console.log(usedNumbers);
-
-        if (question.length >= 0) {
-            setTimeout(function () {
-                if (qTime === 2) {
-                    setQTime(1);
-                } else {
-                    setQTime(2);
-                }
-            }, 3000);
         }
+        return uniqueNumber;
     };
-    useEffect(() => {
-        timeInterval();
+    //-------------------------
 
-        const tes = test();
-        setQuestion(tes);
-    }, [qTime]);
+    const start = async () => {
+        const questions = await test();
+        if (testStart === false) {
+            const uniqueNumbers = await randomGenerator();
+            setUnique(uniqueNumbers);
+        }
 
+        setStart(!testStart);
+    };
     return (
         <div className="rtest container bg-lisght shadow">
-            you have 10 question that must answer . if you ready please click on
-            start
+            {testStart
+                ? ' you have 10 question that must answer . if you ready please click on \
+               start'
+                : 'if you want stop this test click on stop'}
             <div>
                 <button
                     className="btn btn-success btn-lg shadow"
                     style={{ borderRadius: '50%' }}
+                    onClick={() => start()}
                 >
-                    start
+                    {testStart ? 'stop' : 'start'}
                 </button>
             </div>
-            {question.map((ques) =>
-                ques.id === qTime ? (
-                    <div className="bg-light shadow  p-5 w-50" key={ques.id}>
-                        <div className="text-center ">{ques.word}</div>
-                        <form
-                            className="text-center mt-3 "
-                            onSubmit={(e) => e.preventDefault()}
+            {testStart === true ? (
+                <div className="bg-light shadow  p-5 w-50">
+                    <div className="text-center "></div>
+                    <form
+                        className="text-center mt-3 "
+                        onSubmit={(e) => e.preventDefault()}
+                    >
+                        <button
+                            className="btn btn-success  mx-1 my-1"
+                            type="submit"
                         >
-                            <button
-                                className="btn btn-success  mx-1 my-1"
-                                type="submit"
-                                onClick={() => remember(ques.id)}
-                            >
-                                remamber
-                            </button>
-                            <button
-                                className="btn btn-danger  mx-1 my-1"
-                                type="submit"
-                                onClick={() => forget(ques.id)}
-                            >
-                                forget
-                            </button>
-                        </form>
-                        <span>{ques.score}</span>
-                    </div>
-                ) : null
-            )}
+                            remamber
+                        </button>
+                        <button
+                            className="btn btn-danger  mx-1 my-1"
+                            type="submit"
+                        >
+                            forget
+                        </button>
+                    </form>
+                    <span className="badge badge-pill bg-danger text-white">
+                        10
+                    </span>
+                </div>
+            ) : null}
         </div>
     );
 };
