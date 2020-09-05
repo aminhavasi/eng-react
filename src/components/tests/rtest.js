@@ -6,7 +6,7 @@ const Rtest = () => {
     let [testStart, setStart] = useState(false);
     let [unique, setUnique] = useState([]);
 
-    //-random generate
+    //-random generate----------------------------
 
     const randomGenerator = () => {
         let uniqueNumber = [];
