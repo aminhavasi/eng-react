@@ -37,8 +37,13 @@ const Rtest = () => {
         if (testStart === false) {
             const uniqueNumbers = await randomGenerator();
             await setUnique(uniqueNumbers);
+<<<<<<< HEAD
             await setSelected(uniqueNumbers[0] - 1);
             await setQuestion(questions);
+=======
+            console.log(unique);
+            console.log(questions[unique[1]]);
+>>>>>>> e8e4387f0928885ceba4cec58b58ad1c916e24d0
         }
 
         setStart(!testStart);
