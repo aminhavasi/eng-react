@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import './test.css';
 import test from './../../services/fakeRTest';
 
@@ -45,18 +45,31 @@ const Rtest = () => {
     };
     //---------------------------------------
     const remember = async () => {
-        console.log(unique);
-        console.log(question);
+        console.log(selected);
         if (selected === 4) {
+            question[unique[selected] - 1].score += 1;
+
             setSelected(0);
         } else {
+            question[unique[selected] - 1].score += 1;
             setSelected((selected += 1));
         }
     };
+
+    const forget = () => {
+        if (selected === 4) {
+            question[unique[selected] - 1].score -= 1;
+            setSelected(0);
+        } else {
+            question[unique[selected] - 1].score -= 1;
+            setSelected((selected += 1));
+        }
+    };
+
     return (
         <div className="rtest container bg-lisght shadow">
             {testStart
-                ? ' you have 10 question that must answer . if you ready please click on \
+                ? 'you have 10 question that must answer . if you ready please click on \
                start'
                 : 'if you want stop this test click on stop'}
             <div>
@@ -88,6 +101,7 @@ const Rtest = () => {
                             <button
                                 className="btn btn-danger  mx-1 my-1"
                                 type="submit"
+                                onClick={() => forget()}
                             >
                                 forget
                             </button>
@@ -96,12 +110,8 @@ const Rtest = () => {
                             {question[unique[selected] - 1].score}
                         </span>
                     </div>
-                ) : (
-                    console.log('*****')
-                )
-            ) : (
-                console.log('amin')
-            )}
+                ) : null
+            ) : null}
         </div>
     );
 };
