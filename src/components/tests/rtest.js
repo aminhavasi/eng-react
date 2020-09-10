@@ -7,6 +7,7 @@ const Rtest = () => {
     let [unique, setUnique] = useState([]);
     let [question, setQuestion] = useState([]);
     let [selected, setSelected] = useState(0);
+    let [endCount, setEndCount] = useState(1);
 
     //-random generate----------------------------
 
@@ -37,37 +38,53 @@ const Rtest = () => {
         if (testStart === false) {
             const uniqueNumbers = await randomGenerator();
             await setUnique(uniqueNumbers);
-<<<<<<< HEAD
+
             await setSelected(uniqueNumbers[0] - 1);
             await setQuestion(questions);
-=======
+
             console.log(unique);
             console.log(questions[unique[1]]);
->>>>>>> e8e4387f0928885ceba4cec58b58ad1c916e24d0
         }
 
         setStart(!testStart);
     };
+
+    //-end test-------------------------------
+    const endTest = async () => {
+        await setEndCount(1);
+        setStart(!testStart);
+    };
     //---------------------------------------
     const remember = async () => {
-        console.log(selected);
-        if (selected === 4) {
-            question[unique[selected] - 1].score += 1;
-
-            setSelected(0);
+        console.log(endCount);
+        if (endCount === 5) {
+            await endTest();
         } else {
-            question[unique[selected] - 1].score += 1;
-            setSelected((selected += 1));
+            setEndCount((endCount += 1));
+
+            if (selected === 4) {
+                question[unique[selected] - 1].score += 1;
+
+                setSelected(0);
+            } else {
+                question[unique[selected] - 1].score += 1;
+                setSelected((selected += 1));
+            }
         }
     };
 
-    const forget = () => {
-        if (selected === 4) {
-            question[unique[selected] - 1].score -= 1;
-            setSelected(0);
+    const forget = async () => {
+        if (endCount === 5) {
+            await endTest();
         } else {
-            question[unique[selected] - 1].score -= 1;
-            setSelected((selected += 1));
+            setEndCount((endCount += 1));
+            if (selected === 4) {
+                question[unique[selected] - 1].score -= 1;
+                setSelected(0);
+            } else {
+                question[unique[selected] - 1].score -= 1;
+                setSelected((selected += 1));
+            }
         }
     };
 
