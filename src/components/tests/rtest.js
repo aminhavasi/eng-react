@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import './test.css';
 import test from './../../services/fakeRTest';
+import { httpRtestGet } from './../../services/httpTests';
+import { ToastContainer } from 'react-toastify';
 
 const Rtest = () => {
     let [testStart, setStart] = useState(false);
@@ -35,6 +37,7 @@ const Rtest = () => {
 
     const start = async () => {
         const questions = await test();
+        const res = httpRtestGet();
         if (testStart === false) {
             const uniqueNumbers = await randomGenerator();
             await setUnique(uniqueNumbers);
@@ -90,6 +93,17 @@ const Rtest = () => {
 
     return (
         <div className="rtest container bg-lisght shadow">
+            <ToastContainer
+                position="top-right"
+                autoClose={5000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+            />
             {testStart
                 ? 'you have 10 question that must answer . if you ready please click on \
                start'
