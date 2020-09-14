@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import './test.css';
-import test from './../../services/fakeRTest';
-import { httpRtestGet } from './../../services/httpTests';
+import { httpRtestGet, httpTest } from './../../services/httpTests';
 import { ToastContainer } from 'react-toastify';
+import { notify } from '../../utils/toast/toast';
 
 const Rtest = () => {
     let [testStart, setStart] = useState(false);
@@ -13,11 +13,30 @@ const Rtest = () => {
 
     //-random generate----------------------------
 
-    const randomGenerator = () => {
+    const randomGenerator = (data) => {
+        // let uniqueNumber = [];
+        // let index = 0;
+        // while (index < 5) {
+        //     let number = Math.floor(Math.random() * 5 + 1);
+        //     if (uniqueNumber.length === 0) {
+        //         uniqueNumber.push(number);
+        //         index++;
+        //     } else {
+        //         let st = uniqueNumber.find((value) => {
+        //             return value === number;
+        //         });
+        //         if (!st) {
+        //             index++;
+        //             uniqueNumber.push(number);
+        //         }
+        //     }
+        // }
+        // return uniqueNumber;
+        //------------------------------------------------
         let uniqueNumber = [];
         let index = 0;
-        while (index < 5) {
-            let number = Math.floor(Math.random() * 5 + 1);
+        while (index < data.length) {
+            let number = Math.floor(Math.random() * data.length + 1);
             if (uniqueNumber.length === 0) {
                 uniqueNumber.push(number);
                 index++;
@@ -36,17 +55,12 @@ const Rtest = () => {
     //-------------------------
 
     const start = async () => {
-        const questions = await test();
-        const res = httpRtestGet();
         if (testStart === false) {
-            const uniqueNumbers = await randomGenerator();
+            const res = await httpRtestGet();
+            await setQuestion(res.data);
+            const uniqueNumbers = await randomGenerator(res.data);
             await setUnique(uniqueNumbers);
-
             await setSelected(uniqueNumbers[0] - 1);
-            await setQuestion(questions);
-
-            console.log(unique);
-            console.log(questions[unique[1]]);
         }
 
         setStart(!testStart);
@@ -54,18 +68,20 @@ const Rtest = () => {
 
     //-end test-------------------------------
     const endTest = async () => {
+        await httpTest(question);
         await setEndCount(1);
         setStart(!testStart);
     };
     //---------------------------------------
     const remember = async () => {
-        console.log(endCount);
-        if (endCount === 5) {
+        if (endCount === question.length) {
+            question[unique[selected] - 1].score += 1;
+
             await endTest();
         } else {
-            setEndCount((endCount += 1));
+            await setEndCount((endCount += 1));
 
-            if (selected === 4) {
+            if (selected === question.length - 1) {
                 question[unique[selected] - 1].score += 1;
 
                 setSelected(0);
@@ -77,11 +93,13 @@ const Rtest = () => {
     };
 
     const forget = async () => {
-        if (endCount === 5) {
+        if (endCount === question.length) {
+            question[unique[selected] - 1].score -= 1;
+
             await endTest();
         } else {
-            setEndCount((endCount += 1));
-            if (selected === 4) {
+            await setEndCount((endCount += 1));
+            if (selected === question.length - 1) {
                 question[unique[selected] - 1].score -= 1;
                 setSelected(0);
             } else {
